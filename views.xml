@@ -1,0 +1,150 @@
+<odoo>
+  <data>
+    <!-- TREE VIEW DFINITION FOR MODULE -->
+    <record model="ir.ui.view" id="module_two.list">
+      <field name="name">module_two list</field>
+      <field name="model">module_two.module_two</field>
+      <field name="arch" type="xml">
+      	<tree delete="true">
+      		<field name="ref"/>
+      		<field name="day_date"/>
+      		<field name="full_name"/>
+      		<field name="project"/>
+      		<field name="service"/>
+      		<field name="invoiceable"/>
+      		<field name="time" widget='float_time'/>
+      	</tree>
+      </field>
+    </record>
+    
+    <!-- FORM VIEW DEFINITON FOR MODULE-->		
+	<record model="ir.ui.view" id="module_two.form">
+   	<field name="name">Formulaire Recording</field>
+     <field name="model">module_two.module_two</field>
+     <field name="arch" type="xml">
+		  <form>
+				<sheet>
+					<group string="Référence de la tâche" >
+						<field name="ref"/>
+						<group string="Informations de l'employer" style="text-align:left">
+							<field name="full_name"/>
+							<field name="email"/>
+							<field name="post"/>
+						</group>
+						<group string="Informations sur le travail" style="text-align:left">
+							<field name="day_date"/>
+							<field name="time" widget='float_time'/>
+							<field name="service"/>
+							<field name="project"/>
+							<field name="note"/>
+						</group>
+					</group>			
+					<notebook>
+						<page string="Inforations supplémentaires">					
+									<group>
+										<field name="client_prospect"/>
+										<field name="devis_facture"/>
+									</group>
+									<group>
+										<field name="invoiceable"/>
+									</group>
+						</page>
+						<page string="Description de la tâche effectuée">
+							<field name="description"/>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field> 
+	</record>
+    
+    
+    
+    
+		<!-- SEARCH VIEW POUR LE MODULE -->
+		<record id="search_view_designed" model="ir.ui.view">
+      <field name="name">module_two list</field>
+      <field name="model">module_two.module_two</field>
+			<field name="arch" type="xml">
+				<search string="Record information">
+					<field name="full_name"/>
+					<field name="service"/>
+					<field name="project"/>
+					<field name="ref"/>
+					<group expand="0" string="Group By">
+						<filter name="groupby_project" string="Project" context="{'group_by':'project'}"/>
+						<filter name="groupby_name" string="Nom et Prénom" context="{'group_by':'full_name'}"/>
+						<filter name="groupby_service" string="Service" context="{'group_by':'service'}"/>
+					</group>
+					<filter name="fil_by_invoicing" string="Temps Facturable" domain="[('invoiceable','=','True')]"/>
+				</search>
+			</field>
+		</record>
+		
+		<!-- KANBAN VIEW POUR LE MODULE -->
+		<record model="ir.ui.view" id="kanban_view_designed">
+		  <field name="name">module_two list</field>
+		  <field name="model">module_two.module_two</field>
+			<field name="type">kanban</field>
+			<field name="arch" type="xml">
+		    <kanban>
+		    	<templates>
+		      	<t t-name="kanban-box">
+		        	<div class="oe_resource_vignette">
+		            <div class="oe_resource_details">
+		            	<ul>
+		              	<li><field name="full_name" style='font-weight: 900'/></li>
+		                <li><field name="day_date"/></li>
+		                <li><field name="service"/></li>
+		                <li><field name="time" widget='float_time'/> </li>                                   
+		             	</ul>
+		            </div>
+		          </div>                       
+		      	</t>
+		    	</templates>
+		  	</kanban>
+    		</field>
+		</record>
+		
+		
+		
+
+    <!-- GESTION PREMIERE VUE SUR LE MODULE -->   
+    <record model="ir.actions.act_window" id="module_two.action_window">
+      <field name="name">Time tracking</field>
+      <field name="res_model">module_two.module_two</field>
+      <field name="view_mode">tree,kanban,form</field>
+    </record>
+    
+    <!-- GESTION VUE FORMULAIRE 
+    <record model="ir.actions.act_window" id="thisidisunique">
+      <field name="name">module_two window</field>
+      <field name="res_model">module_two.module_two</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+   -->
+
+    <!-- ACTION POUR LE TIMER --> 
+    <record model="ir.actions.server" id="module_two.action_server">
+      <field name="name">module_two server</field>
+      <field name="model_id" ref="model_module_two_module_two"/>
+      <field name="state">code</field>
+      <field name="code"></field>
+    </record>
+   
+
+    <!-- PREMIER ELEMENT COIN GAUCHE -->
+    <menuitem name="Time Traking" id="module_two.menu_root"/>
+   
+    <!-- LES ELEMENTS SUIVANTS DU MENU -->  
+    <menuitem name="Manuellement" id="module_two.menu_1" parent="module_two.menu_root"/>
+    <menuitem name="Automatique" id="module_two.menu_2" parent="module_two.menu_root"/>
+      
+    <!-- LES SOUS MENU + ACTIONS -->  
+    <menuitem name="Liste et Création" id="module_two.menu_1_list" parent="module_two.menu_1"
+              action="module_two.action_window"/>
+  
+   
+  </data>
+</odoo>
